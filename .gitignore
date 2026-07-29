@@ -1,0 +1,5 @@
+build/
+external/
+web/media/hls/*.ts
+web/media/hls/*.m3u8
+!web/media/hls/.gitkeep
