@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, initial-scale=1">
+  <title>HbbTV HLS Software PiP</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <object id="applicationManager" class="hidden-object" type="application/oipfApplicationManager"></object>
+  <object id="broadcastVideo" class="broadcast-video" type="video/broadcast"></object>
+
+  <div id="browserBackground" class="browser-background">
+    <div><span>SIMULAZIONE PROGRAMMA TV</span><strong>Su HbbTV resta visibile il broadcast reale</strong></div>
+  </div>
+
+  <main class="application-layer">
+    <section id="launcher" class="launcher"><span class="key red">R</span><span>Apri HLS Software PiP</span></section>
+
+    <section id="pipPanel" class="pip-panel hidden">
+      <header class="pip-header">
+        <div><h1>HLS Software PiP</h1><p>M3U8/TS → H.264/AAC WASM → WebGL/Web Audio</p></div>
+        <span id="badge" class="badge">Avvio</span>
+      </header>
+
+      <div class="screen">
+        <!-- Il secondo video non usa l'elemento HTML video. -->
+        <canvas id="pipCanvas" width="640" height="360"></canvas>
+        <div id="screenMessage" class="screen-message">Caricamento playlist HLS…</div>
+      </div>
+
+      <div class="timeline">
+        <span id="timeLabel">00:00.000</span>
+        <div class="track"><div id="progressBar" class="progress"></div></div>
+        <span id="durationLabel">00:00.000</span>
+      </div>
+
+      <div class="metrics">
+        <div><span>Decode</span><strong id="decodeMetric">— ms</strong></div>
+        <div><span>Media</span><strong id="averageMetric">— fps</strong></div>
+        <div><span>Video</span><strong id="resolutionMetric">—</strong></div>
+        <div><span>Audio</span><strong id="audioMetric">—</strong></div>
+      </div>
+
+      <div class="controls">
+        <button id="playButton" type="button" disabled>Play</button>
+        <button id="restartButton" type="button" disabled>Ricollega</button>
+        <button id="benchmarkButton" type="button" disabled>Benchmark</button>
+        <button id="muteButton" type="button" disabled>Mute</button>
+        <button id="sizeButton" type="button">Dimensione</button>
+        <button id="closeButton" type="button">Chiudi</button>
+      </div>
+
+      <div class="remote-help">
+        <span><b class="key">OK</b> Play/Pausa</span>
+        <span><b class="key green">G</b> Ricollega</span>
+        <span><b class="key yellow">Y</b> Dimensione</span>
+        <span><b class="key blue">B</b> Benchmark</span>
+        <span><b class="key">M</b> Mute</span>
+        <span><b class="key">▲▼</b> Volume</span>
+        <span><b class="key red">R</b> Apri/Chiudi</span>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite">Preparazione…</p>
+    </section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./hls-player.js"></script>
+  <script src="./renderer-webgl.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
