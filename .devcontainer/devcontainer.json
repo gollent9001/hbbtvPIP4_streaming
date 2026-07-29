@@ -1,0 +1,23 @@
+{
+  "name": "HbbTV WASM HLS Software PiP",
+  "image": "emscripten/emsdk:latest",
+  "containerUser": "root",
+  "remoteUser": "root",
+  "postCreateCommand": "bash -lc 'set -e; apt-get update; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ffmpeg python3 git make ca-certificates; chmod +x scripts/build_ffmpeg.sh; emcc -v; ffmpeg -version | head -n 3'",
+  "forwardPorts": [
+    8080
+  ],
+  "portsAttributes": {
+    "8080": {
+      "label": "HbbTV HLS Software PiP",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools"
+      ]
+    }
+  }
+}
