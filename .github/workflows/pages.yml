@@ -1,0 +1,48 @@
+name: Build and deploy HLS Software PiP
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: emscripten/emsdk:latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install native dependencies
+        run: |
+          apt-get update
+          apt-get install -y ffmpeg git make ca-certificates
+      - name: Cache FFmpeg WASM
+        uses: actions/cache@v4
+        with:
+          path: |
+            external/ffmpeg
+            external/ffmpeg-dist
+          key: ffmpeg-n8.1.2-hls-ts-${{ hashFiles('scripts/build_ffmpeg.sh') }}
+      - name: Build
+        run: |
+          make demo
+          make
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: build
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
